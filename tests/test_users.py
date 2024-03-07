@@ -1,9 +1,4 @@
-from fastapi.testclient import TestClient
-
-from app.app import app
 from app.schemas import UserPublic
-
-client = TestClient(app)
 
 
 def test_create_user(client):
@@ -12,7 +7,7 @@ def test_create_user(client):
         json={
             'username': 'matheus',
             'email': 'matheus@example.com',
-            'password': 'secret',
+            'password': 'testpass',
         },
     )
     assert response.status_code == 201
@@ -42,7 +37,7 @@ def test_update_user(client, user, token):
         json={
             'username': 'matheus',
             'email': 'matheus@example.com',
-            'password': 'swordsmanship',
+            'password': 'mynewpassword',
         },
     )
     assert response.status_code == 200
@@ -60,15 +55,3 @@ def test_delete_user(client, user, token):
     )
     assert response.status_code == 200
     assert response.json() == {'message': 'User deleted'}
-
-
-def test_get_token(client, user):
-    response = client.post(
-        '/token',
-        data={'username': user.email, 'password': user.clean_password},
-    )
-    token = response.json()
-
-    assert response.status_code == 200
-    assert 'access_token' in token
-    assert 'token_type' in token

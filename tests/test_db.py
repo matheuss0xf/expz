@@ -5,7 +5,7 @@ from app.models import User
 
 def test_create_user(session):
     new_user = User(
-        username='matheus', email='matheus@example.com', password='secret'
+        username='matheus', password='testpass', email='teste@test'
     )
     session.add(new_user)
     session.commit()
